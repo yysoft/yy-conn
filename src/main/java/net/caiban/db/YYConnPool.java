@@ -151,7 +151,7 @@ public class YYConnPool {
 	 * 关闭数据库连接
 	 */
 	public void destoryConnectionPools(){
-		LOG.debug("[YYConn] Connection will destory in "+(DESTORY_DELAY/1000)+" seconds.");
+		LOG.debug("[YYConn] Connection Pool will destory in "+(DESTORY_DELAY/1000)+" seconds.");
 		ProxoolFacade.shutdown(DESTORY_DELAY);
 	}
 	

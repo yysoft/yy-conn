@@ -22,12 +22,13 @@ public class YYConnTest {
 	 */
 	@Test
 	public void testInitString() {
-		YYConn conn = new YYConn("yyeasytest");
+		
+		YYConnPool.getInstance().initConnPools(null);
+		
+		YYConn conn = new YYConn("parox");
 		try {
-			conn.prepareStatement("insert into eshop(name,site_url,remark,gmtcreate,domain) values(?,?,?,now(),now())");
-			conn.setString(1, "网店名称，测试");
-			conn.setString(2, "http://www.google.com");
-			conn.setString(3, "here is a remark");
+			conn.prepareStatement("insert into test_api(url,gmt_create,gmt_update) values(?,now(),now())");
+			conn.setString(1, "http://www.google.com");
 			int i = conn.executeUpdate();
 			assertEquals(1, i);
 		} catch (SQLException e) {
@@ -35,6 +36,7 @@ public class YYConnTest {
 		}finally{
 			conn.close();
 		}
+		
 		YYConnPool.getInstance().destoryConnectionPools();
 	}
 

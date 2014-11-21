@@ -60,7 +60,7 @@ public class YYConn {
 	}
 	
 	public void init(String db, boolean autoCommit){
-		LOG.debug("正在获取数据库连接...");
+		LOG.debug("[YYConn] Init DB connect...");
 		this.dbName = db;
 		this.autoCommit = autoCommit;
 		conn = YYConnPool.getInstance().getConnection(db);
@@ -68,7 +68,8 @@ public class YYConn {
 			stmt = conn.createStatement();
 			conn.setAutoCommit(autoCommit);
 		} catch (SQLException e) {
-			LOG.error("无法创建statement",e);
+			LOG.error("[YYConn] Can not create statement",e);
+			e.printStackTrace();
 		}
 	}
 	
@@ -216,13 +217,14 @@ public class YYConn {
 			long currTime = System.currentTimeMillis();
 			ResultSet rs = null;
 			try {
-				LOG.debug("正在执行查询: "+s);
+				LOG.debug("[YYConn] Execute SQL: "+s);
 				rs = stmt.executeQuery(s);
 			}catch (SQLException e) {
-				LOG.error("执行查询发生错误", e);
+				LOG.error("[YYConn] An error occurred when executing SQL: "+s, e);
+				e.printStackTrace();
 			}finally{
 				long currTime2 = System.currentTimeMillis();
-				LOG.debug("执行时间："+(currTime2-currTime)+"ms  数据库:"+dbName);
+				LOG.debug("[YYConn] Executed time: "+(currTime2-currTime)+"ms  Database: "+dbName);
 			}
 			return rs;
 		}
@@ -235,13 +237,13 @@ public class YYConn {
 			long currTime = System.currentTimeMillis();
 			ResultSet rs = null;
 			try {
-				LOG.debug("正在执行查询...");
 				rs = prepStmt.executeQuery();
 			}catch (SQLException e) {
-				LOG.error("执行查询发生错误", e);
+				LOG.error("[YYConn] An error occurred when excuting query.", e);
+				e.printStackTrace();
 			}finally{
 				long currTime2 = System.currentTimeMillis();
-				LOG.debug("执行时间："+(currTime2-currTime)+"ms  数据库:"+dbName);
+				LOG.debug("[YYConn] Executed time: "+(currTime2-currTime)+"ms  Database: "+dbName);
 			}
 			return rs;
 		}
@@ -253,14 +255,15 @@ public class YYConn {
 			long currTime = System.currentTimeMillis();
 			int[] ret = null;
 			try {
-				LOG.debug("正在执行批量操作");
+				LOG.debug("[YYConn] Execute batch query." );
 				ret = prepStmt.executeBatch();
 			}catch (SQLException e) {
-				LOG.error("执行查询发生错误", e);
+				LOG.error("[YYConn] An error occurred when excuting query.", e);
+				e.printStackTrace();
 			}
 			finally{
 				long currTime2 = System.currentTimeMillis();
-				LOG.debug("执行时间："+(currTime2-currTime)+"ms  数据库:"+dbName);
+				LOG.debug("[YYConn] Executed time: "+(currTime2-currTime)+"ms  Database: "+dbName);
 			}
 			return ret;
 		}
@@ -272,14 +275,15 @@ public class YYConn {
 			long currTime = System.currentTimeMillis();
 			int ret = 0;
 			try {
-				LOG.debug("正在执行查询："+s);
+				LOG.debug("[YYConn] Execute sql: "+s );
 				ret = stmt.executeUpdate(s);
 			}catch (SQLException e) {
-				LOG.error("执行查询发生错误", e);
+				LOG.error("[YYConn] An error occurred when excuting query.", e);
+				e.printStackTrace();
 			}
 			finally{
 				long currTime2 = System.currentTimeMillis();
-				LOG.debug("执行时间："+(currTime2-currTime)+"ms  数据库:"+dbName);
+				LOG.debug("[YYConn] Executed time: "+(currTime2-currTime)+"ms  Database: "+dbName);
 			}
 			return ret;
 		}
@@ -291,13 +295,14 @@ public class YYConn {
 			long currTime = System.currentTimeMillis();
 			int ret = 0;
 			try {
-				LOG.debug("正在执行查询...");
+				LOG.debug("[YYConn] Execute sql" );
 				ret = prepStmt.executeUpdate();
 			}catch (SQLException e) {
-				LOG.error("执行查询发生错误", e);
+				LOG.error("[YYConn] An error occurred when excuting query.", e);
+				e.printStackTrace();
 			}finally{
 				long currTime2 = System.currentTimeMillis();
-				LOG.debug("执行时间："+(currTime2-currTime)+"ms  数据库:"+dbName);
+				LOG.debug("[YYConn] Executed time: "+(currTime2-currTime)+"ms  Database: "+dbName);
 			}
 			return ret;
 		}
@@ -306,7 +311,7 @@ public class YYConn {
 	
 	public void close() {
 		try {
-			LOG.debug("正在关闭连接...");
+			LOG.debug("[YYConn] Closing query...");
 			if (prepStmt != null) {
 				prepStmt.close();
 				prepStmt = null;
@@ -322,7 +327,8 @@ public class YYConn {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			LOG.error("关闭连接时发生错误...",e);
+			LOG.error("[YYConn] An error occurred when closing query.", e);
+			e.printStackTrace();
 		}
 	}
 }
